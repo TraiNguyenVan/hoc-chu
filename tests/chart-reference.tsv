@@ -1,0 +1,17 @@
+# Candidate transcription of photograph: row<TAB>category<TAB>space-separated occupied cells
+# One-based rows; category 0=alphabet, 1=red combined-letter row, 2=blue rows.
+# This is a comparison fixture, NOT a certificate of visual verification. See chart-reference.md.
+1	0	a ă â b c d đ e ê g h i k l m n
+2	0	o ô ơ p q r s t u ư v x y
+3	1	ch gh gi ng nh kh ph qu th tr ngh ia ua ưa
+4	2	an at am ap ang ac anh ach ai ay ao au ăn
+5	2	ăt ân ât en et ên êt in it on ot ôn ôt
+6	2	ơn ơt un ut ưt iên iêt yên yêt uôn uôt ươn ươt
+7	2	ăm ăp âm âp em ep êm êp im ip om op ôm
+8	2	ôp ơm ơp um up uôm ươm ươp iêm iêp yêm ăng ăc
+9	2	âng âc eng ec ong oc ông ôc ung uc ưng ưc iêng
+10	2	iêc yêng uông uôc ương ươc ênh êch inh ich âu ây eo
+11	2	êu iu ưu oi ôi ơi ui ưi uôi ươi iêu yêu ươu
+12	2	oa oe uê uy uya oan oat oăn oăt oen oet uân uât
+13	2	uyn uyt uyên uyêt oam oăm oap oang oac oăng oăc oanh oach
+14	2	uynh uych oai oay uây oong ooc uơ uênh uêch uâng uyp

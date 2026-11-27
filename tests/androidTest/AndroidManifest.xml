@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="vn.khoaikhoai.hocchu.accessibilitytest">
+    <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="28" />
+    <application android:label="Accessibility tests">
+        <uses-library android:name="android.test.runner" />
+        <uses-library android:name="android.test.base" android:required="false" />
+    </application>
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="vn.khoaikhoai.hocchu" />
+</manifest>

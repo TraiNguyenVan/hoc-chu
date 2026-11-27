@@ -1,0 +1,27 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'vn.khoaikhoai.hocchu'
+    compileSdk 35
+    buildToolsVersion '35.0.0'
+
+    defaultConfig {
+        applicationId 'vn.khoaikhoai.hocchu'
+        minSdk 23
+        targetSdk 28
+        versionCode 1
+        versionName '1.0'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // ReviewedAudio loads clips using AssetManager.openFd, which needs stored files.
+    androidResources {
+        noCompress += ['mp3']
+    }
+}
