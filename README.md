@@ -1,41 +1,25 @@
-# Bé học chữ (prototype)
+# Bé học chữ
 
-Native Android Java prototype. See [SPEC.md](SPEC.md) for requirements, unfinished work and acceptance gates; see [AUDIO.md](AUDIO.md) for audio status. A successful build does not establish chart correctness, reviewed audio or device usability.
+Ứng dụng Android giúp bé học chữ cái, chữ ghép và các vần tiếng Việt. Chạm vào ô để nghe âm thanh; ứng dụng có thêm phần luyện tập.
 
-## Build with Gradle
+## Tải ứng dụng
 
-Requirements: JDK 17 or 21, Android SDK platform 35, Build Tools 35.0.0 and Platform-Tools; accept the SDK licences. Set `ANDROID_HOME` to the SDK directory (or set `sdk.dir` in an untracked `local.properties`). The first build needs network access to download Gradle 8.9, Android Gradle Plugin 8.7.3 and their dependencies from the configured official repositories. The wrapper verifies the Gradle distribution SHA-256. From the project root:
+Tải APK tại mục [Releases](../../releases). Đây là bản thử nghiệm được ký bằng khóa debug, không phải bản phát hành chính thức.
 
-```sh
-./gradlew clean assembleDebug
-```
+## Tạo APK
 
-Output: `app/build/outputs/apk/debug/app-debug.apk`. This is a debug-signed APK, not a release build. The build keeps MP3 assets uncompressed for `AssetManager.openFd`.
-
-### Tested Docker build on this host
-
-The following command was tested with `eclipse-temurin:21-jdk` and the existing SDK at `/home/yes/.hermes/cache/scratch/android-build-probe/sdk` on the Docker host. Adjust the host mount paths if your SDK or project is elsewhere. Scratch contents can be pruned, so install the SDK again if it is gone. A persistent debug keystore is mounted to avoid generating a new signing identity for every container run:
+Yêu cầu: JDK 17 hoặc 21, Android SDK Platform 35, Build Tools 35.0.0 và Platform-Tools. Chấp nhận giấy phép SDK và đặt biến `ANDROID_HOME` trỏ đến thư mục SDK, hoặc đặt `sdk.dir` trong `local.properties`.
 
 ```sh
-mkdir -p /opt/data/cache/scratch/khoaikhoai-gradle/android-home
-docker run --rm \
-  -v /home/yes/.hermes:/data \
-  -v /home/yes/.hermes/cache/scratch/khoaikhoai-gradle/android-home:/root/.android \
-  -w /data/projects/khoaikhoai-01 \
-  -e ANDROID_HOME=/data/cache/scratch/android-build-probe/sdk \
-  -e GRADLE_USER_HOME=/data/cache/scratch/khoaikhoai-gradle/gradle-home \
-  -e JAVA_TOOL_OPTIONS=-XX:TieredStopAtLevel=1 \
-  eclipse-temurin:21-jdk ./gradlew clean assembleDebug --no-daemon --max-workers=2
+./gradlew assembleDebug
 ```
 
-On this host the first build crashed in the Temurin 21.0.12 C2 compiler; `JAVA_TOOL_OPTIONS` above disables C2 as a local workaround, not a general requirement. SDK XML version and Java 8 source/target deprecation warnings were also observed. Debug keystores generated on different machines or by the manual build are distinct; Android will not update an existing install signed with a different key. Back up the keystore if retaining the same debug signing identity matters. Do not use it for release signing.
+Lần build đầu cần kết nối mạng để tải Gradle và các thư viện. APK được tạo tại `app/build/outputs/apk/debug/app-debug.apk`.
 
-## Existing manual build
+Cũng có thể dùng `sh build-debug.sh` khi đã cài JDK và Android SDK. APK tạo tại `build/manual/app-debug.apk`; biến `BUILD_OUT` cho phép chọn thư mục khác. Script xóa các file APK và ZIP trong thư mục đầu ra trước khi build.
 
-The existing `build-debug.sh` remains available and was independently built and signature-verified using JDK 21 and the same SDK. From the project root on a host with JDK tools in `PATH` and `ANDROID_HOME` set:
+Các bản build dùng khóa ký khác nhau không thể cài đè lên nhau. Giữ lại khóa debug nếu cần cập nhật bản đã cài; không dùng khóa debug để phát hành chính thức.
 
-```sh
-sh build-debug.sh
-```
+## Tình trạng
 
-Default output: `build/manual/app-debug.apk`. Set `BUILD_OUT` to use a different output directory; the script removes existing APK and ZIP files within that directory and generates a local debug keystore there. It uses a different debug signing key from Gradle by default.
+Đây là bản thử nghiệm. Nội dung bảng và cách phát âm vẫn cần được kiểm tra. Xem [SPEC.md](SPEC.md) và [AUDIO.md](AUDIO.md) để biết chi tiết.
