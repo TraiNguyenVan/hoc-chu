@@ -4,7 +4,7 @@
 
 ## Tải ứng dụng
 
-Tải APK tại mục [Releases](../../releases). Đây là bản thử nghiệm được ký bằng khóa debug, không phải bản phát hành chính thức.
+Tải APK từ mục [Actions](../../actions/workflows/android-apk.yml): chọn lần chạy thành công trên nhánh `main`, rồi tải artifact `hoc-chu-signed-apk`. Artifact hết hạn sau 30 ngày; cần đăng nhập GitHub để tải. Cũng có thể chạy lại workflow bằng nút **Run workflow**. Đây là bản thử nghiệm được ký bằng khóa debug, không phải bản phát hành chính thức.
 
 ## Tạo APK
 

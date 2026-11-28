@@ -18,6 +18,8 @@ cp "$OUT/base.apk" "$OUT/unaligned.apk"
 (cd "$OUT/dex" && "$BT/aapt" add "../unaligned.apk" classes.dex)
 "$BT/zipalign" -f 4 "$OUT/unaligned.apk" "$OUT/aligned.apk"
 if [ ! -f "$OUT/debug.keystore" ]; then keytool -genkeypair -keystore "$OUT/debug.keystore" -storepass android -keypass android -alias androiddebugkey -dname 'CN=Android Debug,O=Prototype,C=VN' -keyalg RSA -keysize 2048 -validity 10000 >/dev/null 2>&1; fi
-"$BT/apksigner" sign --ks "$OUT/debug.keystore" --ks-pass pass:android --key-pass pass:android --out "$OUT/app-debug.apk" "$OUT/aligned.apk"
+SIGNING_PASSWORD=${SIGNING_PASSWORD:-android}
+export SIGNING_PASSWORD
+"$BT/apksigner" sign --ks "$OUT/debug.keystore" --ks-pass env:SIGNING_PASSWORD --key-pass env:SIGNING_PASSWORD --out "$OUT/app-debug.apk" "$OUT/aligned.apk"
 "$BT/apksigner" verify "$OUT/app-debug.apk"
 echo "APK ready: $OUT/app-debug.apk"
