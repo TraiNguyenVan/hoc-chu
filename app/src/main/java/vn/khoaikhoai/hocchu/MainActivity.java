@@ -1,6 +1,7 @@
 package vn.khoaikhoai.hocchu;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 
 import android.os.Bundle;
 import android.graphics.Color;
@@ -52,7 +53,7 @@ public class MainActivity extends Activity {
  private void gap(LinearLayout l,int h){View v=new View(this);l.addView(v,new LinearLayout.LayoutParams(1,dp(h)));}
  private LinearLayout.LayoutParams lp(int w,int h){return new LinearLayout.LayoutParams(w<0?w:dp(w),h<0?h:dp(h));}
  private TextView action(String s,int color,int bg){TextView b=center(s,15,color,true);b.setBackground(shape(bg,0,16));b.setPadding(dp(16),0,dp(16),0);b.setMinHeight(dp(52));b.setClickable(true);b.setFocusable(true);return b;}
- @Override public void onCreate(Bundle b){super.onCreate(b);reviewedAudio=new ReviewedAudio(new AndroidAudioBackend(getAssets()));getWindow().setStatusBarColor(CREAM);getWindow().setNavigationBarColor(CREAM);getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);shell();
+ @Override public void onCreate(Bundle b){super.onCreate(b);reviewedAudio=new ReviewedAudio(new AndroidAudioBackend(getAssets()));String savedVoice=getPreferences(MODE_PRIVATE).getString("voice","nam");reviewedAudio.setVoice("bac".equals(savedVoice)?"bac":"nam");getWindow().setStatusBarColor(CREAM);getWindow().setNavigationBarColor(CREAM);getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);shell();
   if(b!=null && b.getInt("screen",0)==2 && b.getSerializable("quiz") instanceof Quiz.State){
    section=b.getInt("section",0);
    try{quiz=Quiz.restore(LearningData.items(section),(Quiz.State)b.getSerializable("quiz"));renderQuestion();return;}catch(RuntimeException ignored){quiz=null;}
@@ -64,7 +65,12 @@ public class MainActivity extends Activity {
   root=col();root.setBackgroundColor(WHITE);setContentView(root);
   nav=row();nav.setPadding(dp(12),dp(4),dp(12),dp(4));root.addView(nav,lp(-1,58));String[] names={"Bảng học","Luyện tập"};
   for(int i=0;i<2;i++){final int n=i;TextView t=center(names[i],14,TEAL,true);t.setClickable(true);t.setFocusable(true);LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(0,dp(48),1);if(i>0)p.leftMargin=dp(8);nav.addView(t,p);navItems[i]=t;t.setOnClickListener(v->{if(n==1)showQuizMenu();else showChart(0);});}
+  TextView settings=center("Cài đặt",14,TEAL,true);settings.setClickable(true);settings.setFocusable(true);settings.setMinHeight(dp(48));nav.addView(settings,lp(82,48));settings.setOnClickListener(v->showVoiceSettings());
   scroll=new ScrollView(this);scroll.setFillViewport(false);scroll.setClipToPadding(false);scroll.setPadding(dp(8),0,dp(8),dp(16));root.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));content=col();scroll.addView(content);
+ }
+ private void showVoiceSettings(){
+  String[] choices={"Miền Nam – Thùy Duyên","Miền Bắc – Thảo Chi"};
+  new AlertDialog.Builder(this).setTitle("Chọn giọng đọc").setSingleChoiceItems(choices,"bac".equals(reviewedAudio.voice())?1:0,(dialog,which)->{String voice=which==1?"bac":"nam";reviewedAudio.setVoice(voice);getPreferences(MODE_PRIVATE).edit().putString("voice",voice).apply();dialog.dismiss();}).setNegativeButton("Đóng",null).show();
  }
  private void selected(int n){for(int i=0;i<2;i++){navItems[i].setSelected(i==n);navItems[i].setTextColor(i==n?WHITE:TEAL);navItems[i].setBackground(shape(i==n?TEAL:WHITE,i==n?0:LINE,10));}}
  private void reset(){content.removeAllViews();scroll.post(()->scroll.scrollTo(0,0));}

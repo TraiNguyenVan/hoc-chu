@@ -13,8 +13,8 @@ public class AudioTest {
     }
     public static void main(String[] args) {
         Backend backend = new Backend(); ReviewedAudio audio = new ReviewedAudio(backend);
-        check("audio/0/61.mp3".equals(ReviewedAudio.path(0, "a")), "ASCII name");
-        check("audio/2/c4836e.mp3".equals(ReviewedAudio.path(2, "ăn")), "UTF-8 exact name");
+        check("audio/nam/0/61.mp3".equals(ReviewedAudio.path(0, "a")), "ASCII name");
+        check("audio/nam/2/c4836e.mp3".equals(ReviewedAudio.path(2, "ăn")), "UTF-8 exact name");
         check(!ReviewedAudio.path(0, "a").equals(ReviewedAudio.path(1, "a")), "Categories must not collide");
         check(!audio.available(0, "a"), "Missing clip unavailable");
         check(!audio.play(0, "a", () -> {}), "Missing clip cannot play");
@@ -29,6 +29,9 @@ public class AudioTest {
         check(audio.play(2, "ăn", () -> {}), "Play another clip");
         check(second.equals(backend.current), "Second item has its own clip");
         audio.stop(); check(backend.current == null, "Stop releases playback");
+        String north = ReviewedAudio.path("bac", 0, "a"); backend.clips.add(north);
+        audio.setVoice("bac"); check(audio.play(0,"a",()->{}), "North clip plays"); check(north.equals(backend.current), "Selected voice used");
+        audio.setVoice("nam"); check(backend.current == null, "Switch stops playback");
         backend.fail = true; check(!audio.play(0, "a", () -> {}), "Playback failure is unavailable");
         boolean rejected = false; try { ReviewedAudio.path(3, "a"); } catch (IllegalArgumentException e) { rejected = true; }
         check(rejected, "Invalid category rejected");
