@@ -17,6 +17,9 @@ class VoiceAssetsTest(unittest.TestCase):
         self.assertIn('getPreferences(MODE_PRIVATE).getString("voice","nam")', source)
         self.assertIn('putString("voice",voice).apply()', source)
         self.assertIn('reviewedAudio.setVoice(voice)', source)
+        self.assertIn('Miền Nam – Diễm My', source)
+        self.assertIn('Miền Bắc – Quỳnh Anh', source)
+        self.assertIn('which==1?"bac":"nam"', source)
 
 if __name__ == "__main__":
     unittest.main()

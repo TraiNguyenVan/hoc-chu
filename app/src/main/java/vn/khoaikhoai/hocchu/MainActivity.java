@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
   scroll=new ScrollView(this);scroll.setFillViewport(false);scroll.setClipToPadding(false);scroll.setPadding(dp(8),0,dp(8),dp(16));root.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));content=col();scroll.addView(content);
  }
  private void showVoiceSettings(){
-  String[] choices={"Miền Nam – Thùy Duyên","Miền Bắc – Thảo Chi"};
+  String[] choices={"Miền Nam – Diễm My","Miền Bắc – Quỳnh Anh"};
   new AlertDialog.Builder(this).setTitle("Chọn giọng đọc").setSingleChoiceItems(choices,"bac".equals(reviewedAudio.voice())?1:0,(dialog,which)->{String voice=which==1?"bac":"nam";reviewedAudio.setVoice(voice);getPreferences(MODE_PRIVATE).edit().putString("voice",voice).apply();dialog.dismiss();}).setNegativeButton("Đóng",null).show();
  }
  private void selected(int n){for(int i=0;i<2;i++){navItems[i].setSelected(i==n);navItems[i].setTextColor(i==n?WHITE:TEAL);navItems[i].setBackground(shape(i==n?TEAL:WHITE,i==n?0:LINE,10));}}
